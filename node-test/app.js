@@ -17,8 +17,23 @@ async function run() {
   //   const userListResult = await users.insertMany(userList);
   //   console.log('result', userListResult);
 
-  const findUser = await users.findOne({ age: { $gt: 20 } });
-  console.log('result', findUser);
+  //   const findUser = await users.findOne({ age: { $gt: 20 } });
+  //   console.log('result', findUser);
+
+  //   const updateUser = await users.updateOne(
+  //     { name: 'noona' },
+  //     { $set: { age: 18 } },
+  //   );
+  //   console.log('result', updateUser);
+
+  //   const deleteUsers = await users.deleteMany({ age: { $gt: 20 } });
+  //   console.log('delete!', deleteUsers);
+
+  const userData = await users
+    .find({ name: 'noona' })
+    .project({ name: 1 })
+    .toArray();
+  console.log('userdata', userData);
 }
 
 run();
