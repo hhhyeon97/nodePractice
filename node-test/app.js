@@ -1,39 +1,43 @@
-const { MongoClient } = require('mongodb');
-const uri = `mongodb://localhost:27017`;
-const client = new MongoClient(uri);
+// express 가져오기
+const express = require('express');
+// express를 사용한 app 선언
+const app = express();
 
-// async function run() {
-//   const database = client.db('firstDB');
-//   const users = database.collection('user');
+// 익스프레스의 라우팅 예시
 
-//   const userData = await users.insertOne({ name: 'noona', age: 17 });
-//   console.log('result', userData);
+// app.get('/', (req, res) => {
+//   res.send('hello world !');
+// });
 
-//   const userList = [
-//     { name: '철수', age: 30 },
-//     { name: 'kiki', age: 25 },
-//   ];
+// app.get('/about', (req, res) => {
+//   res.send('this is all about express !');
+// });
 
-//   const userListResult = await users.insertMany(userList);
-//   console.log('result', userListResult);
+// 익스프레스 미들웨어 예시
 
-//   const findUser = await users.findOne({ age: { $gt: 20 } });
-//   console.log('result', findUser);
+const checkAuth = (req, res, next) => {
+  console.log('she has admin permission !');
+  next();
+};
 
-//   const updateUser = await users.updateOne(
-//     { name: 'noona' },
-//     { $set: { age: 18 } },
-//   );
-//   console.log('result', updateUser);
+const token = 'token이에요!';
 
-//   const deleteUsers = await users.deleteMany({ age: { $gt: 20 } });
-//   console.log('delete!', deleteUsers);
+const checkToken = (req, res, next) => {
+  if (token) {
+    next();
+  } else {
+    res.send("you don't have token");
+  }
+};
 
-//   const userData = await users
-//     .find({ name: 'noona' })
-//     .project({ name: 1 })
-//     .toArray();
-//   console.log('userdata', userData);
-// }
+const getUser = (req, res) => {
+  console.log('here is user info !');
+  res.send('here is user info !');
+};
 
-// run();
+app.get('/users', checkAuth, checkToken, getUser);
+
+// 포트 열어주자
+app.listen(5000, () => {
+  console.log('server is on 5000');
+});
